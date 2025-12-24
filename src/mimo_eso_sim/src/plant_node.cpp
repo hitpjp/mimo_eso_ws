@@ -8,22 +8,23 @@ class PlantNode : public rclcpp::Node
 public:
     PlantNode() : Node("plant_node"), gen_(rd_()), dist_(0.0, 1.0)
     {
-        // 初始化物理参数
         mass_ = 1.5;
-        inertia_ << 0.02, 0.02, 0.04; // 绕轴转动惯量 Jx, Jy, Jz
+        inertia_ << 0.02, 0.02, 0.04;
 
+        pos_.setZero();
         vel_.setZero();
+        angle_.setZero();
         ang_vel_.setZero();
         f_wind_last_.setZero();
         tau_wind_last_.setZero();
 
-        // 发布者：速度、角速度、真实扰动真相
+        pos_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/plant/position", 10);
         vel_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/plant/velocity", 10);
+        angle_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/plant/angle", 10);
         ang_vel_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/plant/angular_velocity", 10);
         true_f_dist_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/plant/true_force_dist", 10);
         true_tau_dist_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/plant/true_torque_dist", 10);
 
-        // 订阅者：控制力矩和推力
         thrust_sub_ = this->create_subscription<geometry_msgs::msg::Vector3>(
             "/control/thrust", 10, [this](const geometry_msgs::msg::Vector3::SharedPtr msg)
             { f_ctrl_ << msg->x, msg->y, msg->z; });
@@ -39,7 +40,7 @@ private:
     {
         double dt = 0.01;
 
-        // 1. 生成随机风力和风力矩 (随机行走模型)
+        // 1. 随机干扰模型
         Eigen::Vector3d f_wind, tau_wind;
         for (int i = 0; i < 3; ++i)
         {
@@ -49,24 +50,26 @@ private:
         f_wind_last_ = f_wind;
         tau_wind_last_ = tau_wind;
 
-        // 2. 平动动力学 (F = m*a)
-        // 加速度 = (空气阻力 + 控制推力 + 外部风力 + 重力) / 质量
+        // 2. 平动动力学 (位置 = 速度的积分)
         Eigen::Vector3d v_dot = (-0.1 * vel_ + f_ctrl_ + f_wind) / mass_ + Eigen::Vector3d(0, 0, -9.81);
         vel_ += v_dot * dt;
+        pos_ += vel_ * dt;
 
-        // 3. 转动动力学 (Tau = J * alpha)
-        // 角加速度 = (控制力矩 + 外部风力矩) / 转动惯量
+        // 3. 转动动力学 (角度 = 角速度的积分)
         Eigen::Vector3d w_dot;
         w_dot.x() = (tau_ctrl_.x() + tau_wind.x()) / inertia_.x();
         w_dot.y() = (tau_ctrl_.y() + tau_wind.y()) / inertia_.y();
         w_dot.z() = (tau_ctrl_.z() + tau_wind.z()) / inertia_.z();
         ang_vel_ += w_dot * dt;
+        angle_ += ang_vel_ * dt;
 
         // 4. 发布测量值
+        publish_vec(pos_pub_, pos_);
         publish_vec(vel_pub_, vel_);
+        publish_vec(angle_pub_, angle_);
         publish_vec(ang_vel_pub_, ang_vel_);
-        publish_vec(true_f_dist_pub_, f_wind / mass_);                        // 发布单位质量的干扰加速度
-        publish_vec(true_tau_dist_pub_, tau_wind.array() / inertia_.array()); // 发布单位惯量的角加速度干扰
+        publish_vec(true_f_dist_pub_, f_wind / mass_);
+        publish_vec(true_tau_dist_pub_, tau_wind.array() / inertia_.array());
     }
 
     void publish_vec(rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr pub, const Eigen::Vector3d &v)
@@ -79,12 +82,11 @@ private:
     }
 
     double mass_;
-    Eigen::Vector3d inertia_;
-    Eigen::Vector3d vel_, ang_vel_, f_ctrl_, tau_ctrl_, f_wind_last_, tau_wind_last_;
+    Eigen::Vector3d inertia_, pos_, vel_, angle_, ang_vel_, f_ctrl_, tau_ctrl_, f_wind_last_, tau_wind_last_;
     std::random_device rd_;
     std::mt19937 gen_;
     std::normal_distribution<> dist_;
-    rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr vel_pub_, ang_vel_pub_, true_f_dist_pub_, true_tau_dist_pub_;
+    rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr pos_pub_, vel_pub_, angle_pub_, ang_vel_pub_, true_f_dist_pub_, true_tau_dist_pub_;
     rclcpp::Subscription<geometry_msgs::msg::Vector3>::SharedPtr thrust_sub_, torque_sub_;
     rclcpp::TimerBase::SharedPtr timer_;
 };

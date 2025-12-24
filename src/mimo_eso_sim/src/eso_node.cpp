@@ -5,31 +5,48 @@
 class VectorNESO
 {
 public:
-    VectorNESO(double wo, double ts) : ts_(ts)
+    // 增加 alpha 和 delta 作为构造参数
+    VectorNESO(double wo, double ts, double a1, double a2, double d)
+        : ts_(ts), alpha1_(a1), alpha2_(a2), delta_(d)
     {
-        beta1_ = 2.0 * wo;
-        beta2_ = wo * wo;
+        beta1_ = 3.0 * wo;
+        beta2_ = 3.0 * wo * wo;
+        beta3_ = wo * wo * wo;
         z1_.setZero();
         z2_.setZero();
+        z3_.setZero();
     }
 
     void update(const Eigen::Vector3d &y_meas, const Eigen::Vector3d &bu)
     {
         Eigen::Vector3d e = z1_ - y_meas;
-        Eigen::Vector3d fal_e;
+
+        auto fal = [](double error, double alpha, double delta)
+        {
+            if (std::abs(error) > delta)
+                return std::pow(std::abs(error), alpha) * (error > 0 ? 1.0 : -1.0);
+            return error / std::pow(delta, 1.0 - alpha);
+        };
+
+        Eigen::Vector3d fal_e1, fal_e2;
         for (int i = 0; i < 3; ++i)
         {
-            double delta = 0.005; // 减小线性区间提高微观精度
-            fal_e[i] = (std::abs(e[i]) > delta) ? std::pow(std::abs(e[i]), 0.5) * (e[i] > 0 ? 1 : -1) : e[i] / std::pow(delta, 0.5);
+            fal_e1[i] = fal(e[i], alpha1_, delta_);
+            fal_e2[i] = fal(e[i], alpha2_, delta_);
         }
-        z1_ += (z2_ - beta1_ * e + bu) * ts_;
-        z2_ += (-beta2_ * fal_e) * ts_;
+
+        // 离散更新
+        z1_ += (z2_ - beta1_ * e) * ts_;
+        z2_ += (z3_ - beta2_ * fal_e1 + bu) * ts_;
+        z3_ += (-beta3_ * fal_e2) * ts_;
     }
-    Eigen::Vector3d get_dist() const { return z2_; }
+
+    Eigen::Vector3d get_dist() const { return z3_; }
 
 private:
-    double beta1_, beta2_, ts_;
-    Eigen::Vector3d z1_, z2_;
+    double beta1_, beta2_, beta3_, ts_;
+    double alpha1_, alpha2_, delta_;
+    Eigen::Vector3d z1_, z2_, z3_;
 };
 
 class ESONode : public rclcpp::Node
@@ -37,18 +54,33 @@ class ESONode : public rclcpp::Node
 public:
     ESONode() : Node("eso_node")
     {
-        trans_eso_ = std::make_unique<VectorNESO>(25.0, 0.01); // 提高带宽
-        rot_eso_ = std::make_unique<VectorNESO>(40.0, 0.01);   // 姿态带宽要求更高
+        // --- 参数调试区 ---
 
+        // 1. 平动 ESO: 保持现有配置，alpha=0.75/0.5, delta=0.02
+        trans_eso_ = std::make_unique<VectorNESO>(18.0, 0.01, 0.75, 0.5, 0.02);
+
+        // 2. 转动 ESO:
+        // Bandwidth: 降低到 20.0 抑制震荡
+        // Delta: 增大到 0.05，扩大线性区间，过滤高频噪声
+        // Alpha: 将 alpha2 提高到 0.6，减弱非线性段的突变
+        rot_eso_ = std::make_unique<VectorNESO>(20.0, 0.01, 0.75, 0.6, 0.05);
+
+        // --- 订阅与发布逻辑 (保持不变) ---
+        p_sub_ = this->create_subscription<geometry_msgs::msg::Vector3>("/plant/position", 10,
+                                                                        [this](const geometry_msgs::msg::Vector3::SharedPtr msg)
+                                                                        { p_meas_ << msg->x, msg->y, msg->z; });
         v_sub_ = this->create_subscription<geometry_msgs::msg::Vector3>("/plant/velocity", 10,
                                                                         [this](const geometry_msgs::msg::Vector3::SharedPtr msg)
                                                                         { v_meas_ << msg->x, msg->y, msg->z; });
-        w_sub_ = this->create_subscription<geometry_msgs::msg::Vector3>("/plant/angular_velocity", 10,
+        a_sub_ = this->create_subscription<geometry_msgs::msg::Vector3>("/plant/angle", 10,
                                                                         [this](const geometry_msgs::msg::Vector3::SharedPtr msg)
-                                                                        { w_meas_ << msg->x, msg->y, msg->z; });
+                                                                        { a_meas_ << msg->x, msg->y, msg->z; });
         f_sub_ = this->create_subscription<geometry_msgs::msg::Vector3>("/control/thrust", 10,
                                                                         [this](const geometry_msgs::msg::Vector3::SharedPtr msg)
                                                                         { f_ctrl_ << msg->x, msg->y, msg->z; });
+        tau_sub_ = this->create_subscription<geometry_msgs::msg::Vector3>("/control/torque", 10,
+                                                                          [this](const geometry_msgs::msg::Vector3::SharedPtr msg)
+                                                                          { tau_ctrl_ << msg->x, msg->y, msg->z; });
 
         df_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/eso/force_dist", 10);
         dtau_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("/eso/torque_dist", 10);
@@ -59,14 +91,18 @@ public:
 private:
     void on_timer()
     {
-        // 1. 平动 ESO 更新 (含重力、推力、阻尼补偿)
-        Eigen::Vector3d bu_trans = (f_ctrl_ / 1.5) + Eigen::Vector3d(0, 0, -9.81) - 0.1 * v_meas_ / 1.5;
-        trans_eso_->update(v_meas_, bu_trans);
+        // 平动 bu
+        Eigen::Vector3d bu_trans = (f_ctrl_ / 1.5) + Eigen::Vector3d(0, 0, -9.81) - (0.1 * v_meas_ / 1.5);
+        trans_eso_->update(p_meas_, bu_trans);
 
-        // 2. 转动 ESO 更新 (目前暂无控制力矩 tau_ctrl，故为 Zero)
-        rot_eso_->update(w_meas_, Eigen::Vector3d::Zero());
+        // 转动 bu (对应 Jx=0.02, Jy=0.02, Jz=0.04)
+        Eigen::Vector3d bu_rot;
+        bu_rot.x() = tau_ctrl_.x() / 0.02;
+        bu_rot.y() = tau_ctrl_.y() / 0.02;
+        bu_rot.z() = tau_ctrl_.z() / 0.04;
+        rot_eso_->update(a_meas_, bu_rot);
 
-        // 3. 发布
+        // 发布
         auto msg_f = geometry_msgs::msg::Vector3();
         msg_f.x = trans_eso_->get_dist().x();
         msg_f.y = trans_eso_->get_dist().y();
@@ -81,8 +117,9 @@ private:
     }
 
     std::unique_ptr<VectorNESO> trans_eso_, rot_eso_;
-    Eigen::Vector3d v_meas_ = Eigen::Vector3d::Zero(), w_meas_ = Eigen::Vector3d::Zero(), f_ctrl_ = Eigen::Vector3d::Zero();
-    rclcpp::Subscription<geometry_msgs::msg::Vector3>::SharedPtr v_sub_, w_sub_, f_sub_;
+    Eigen::Vector3d p_meas_ = Eigen::Vector3d::Zero(), v_meas_ = Eigen::Vector3d::Zero();
+    Eigen::Vector3d a_meas_ = Eigen::Vector3d::Zero(), f_ctrl_ = Eigen::Vector3d::Zero(), tau_ctrl_ = Eigen::Vector3d::Zero();
+    rclcpp::Subscription<geometry_msgs::msg::Vector3>::SharedPtr p_sub_, v_sub_, a_sub_, f_sub_, tau_sub_;
     rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr df_pub_, dtau_pub_;
     rclcpp::TimerBase::SharedPtr timer_;
 };
