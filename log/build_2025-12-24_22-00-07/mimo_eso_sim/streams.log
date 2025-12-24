@@ -1,0 +1,31 @@
+[0.007s] Invoking command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/pjp2/mimo_eso_ws/build/mimo_eso_sim -- -j24 -l24
+[0.030s] [35m[1mConsolidate compiler generated dependencies of target eso_node[0m
+[0.037s] [ 25%] [32mBuilding CXX object CMakeFiles/plant_node.dir/src/plant_node.cpp.o[0m
+[0.041s] [ 50%] [32mBuilding CXX object CMakeFiles/eso_node.dir/src/eso_node.cpp.o[0m
+[5.489s] [ 75%] [32m[1mLinking CXX executable plant_node[0m
+[5.663s] [100%] [32m[1mLinking CXX executable eso_node[0m
+[5.846s] [100%] Built target plant_node
+[6.106s] [100%] Built target eso_node
+[6.112s] Invoked command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/pjp2/mimo_eso_ws/build/mimo_eso_sim -- -j24 -l24
+[6.117s] Invoking command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/pjp2/mimo_eso_ws/build/mimo_eso_sim
+[6.120s] -- Install configuration: ""
+[6.120s] -- Execute custom install script
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/lib/mimo_eso_sim/plant_node
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/lib/mimo_eso_sim/eso_node
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/launch/mimo_eso_launch.py
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/ament_index/resource_index/package_run_dependencies/mimo_eso_sim
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/ament_index/resource_index/parent_prefix_path/mimo_eso_sim
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/ament_prefix_path.sh
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/ament_prefix_path.dsv
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/path.sh
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/path.dsv
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.bash
+[6.121s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.sh
+[6.122s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.zsh
+[6.122s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.dsv
+[6.122s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/package.dsv
+[6.127s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/ament_index/resource_index/packages/mimo_eso_sim
+[6.127s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/cmake/mimo_eso_simConfig.cmake
+[6.127s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/cmake/mimo_eso_simConfig-version.cmake
+[6.128s] -- Up-to-date symlink: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/package.xml
+[6.129s] Invoked command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/pjp2/mimo_eso_ws/build/mimo_eso_sim
