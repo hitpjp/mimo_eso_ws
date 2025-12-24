@@ -1,0 +1,67 @@
+[0.008s] Invoking command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/pjp2/mimo_eso_ws/src/mimo_eso_sim -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/pjp2/mimo_eso_ws/install/mimo_eso_sim
+[0.348s] -- The C compiler identification is GNU 11.4.0
+[1.494s] -- The CXX compiler identification is GNU 11.4.0
+[1.989s] -- Detecting C compiler ABI info
+[2.159s] -- Detecting C compiler ABI info - done
+[2.163s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.163s] -- Detecting C compile features
+[2.164s] -- Detecting C compile features - done
+[2.166s] -- Detecting CXX compiler ABI info
+[2.315s] -- Detecting CXX compiler ABI info - done
+[2.319s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.319s] -- Detecting CXX compile features
+[2.320s] -- Detecting CXX compile features - done
+[2.321s] -- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)
+[2.401s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[2.434s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[2.446s] -- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)
+[2.918s] -- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[2.920s] -- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[2.924s] -- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[2.930s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.939s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[2.961s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[2.963s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[5.295s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[7.783s] -- Found FastRTPS: /opt/ros/humble/include  
+[12.127s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[12.131s] -- Looking for pthread.h
+[12.329s] -- Looking for pthread.h - found
+[12.329s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[12.690s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[12.690s] -- Found Threads: TRUE  
+[12.719s] -- Found geometry_msgs: 4.8.0 (/opt/ros/humble/share/geometry_msgs/cmake)
+[12.768s] -- Configuring done
+[12.774s] -- Generating done
+[12.776s] -- Build files have been written to: /home/pjp2/mimo_eso_ws/build/mimo_eso_sim
+[12.783s] Invoked command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/pjp2/mimo_eso_ws/src/mimo_eso_sim -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/pjp2/mimo_eso_ws/install/mimo_eso_sim
+[12.784s] Invoking command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/pjp2/mimo_eso_ws/build/mimo_eso_sim -- -j24 -l24
+[12.807s] [ 50%] [32mBuilding CXX object CMakeFiles/eso_node.dir/src/eso_node.cpp.o[0m
+[12.807s] [ 50%] [32mBuilding CXX object CMakeFiles/plant_node.dir/src/plant_node.cpp.o[0m
+[18.459s] [ 75%] [32m[1mLinking CXX executable plant_node[0m
+[18.472s] [100%] [32m[1mLinking CXX executable eso_node[0m
+[18.877s] [100%] Built target plant_node
+[18.881s] [100%] Built target eso_node
+[18.887s] Invoked command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/pjp2/mimo_eso_ws/build/mimo_eso_sim -- -j24 -l24
+[18.892s] Invoking command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/pjp2/mimo_eso_ws/build/mimo_eso_sim
+[18.895s] -- Install configuration: ""
+[18.895s] -- Execute custom install script
+[18.895s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/lib/mimo_eso_sim/plant_node
+[18.899s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/lib/mimo_eso_sim/eso_node
+[18.903s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/launch/mimo_eso_launch.py
+[18.907s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/ament_index/resource_index/package_run_dependencies/mimo_eso_sim
+[18.911s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/ament_index/resource_index/parent_prefix_path/mimo_eso_sim
+[18.914s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/ament_prefix_path.sh
+[18.918s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/ament_prefix_path.dsv
+[18.922s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/path.sh
+[18.925s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/environment/path.dsv
+[18.929s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.bash
+[18.932s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.sh
+[18.936s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.zsh
+[18.940s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/local_setup.dsv
+[18.944s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/package.dsv
+[18.947s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/ament_index/resource_index/packages/mimo_eso_sim
+[18.951s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/cmake/mimo_eso_simConfig.cmake
+[18.954s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/cmake/mimo_eso_simConfig-version.cmake
+[18.958s] -- Symlinking: /home/pjp2/mimo_eso_ws/install/mimo_eso_sim/share/mimo_eso_sim/package.xml
+[18.963s] Invoked command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/pjp2/mimo_eso_ws/build/mimo_eso_sim

@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-74265f03033033b53849.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "mimo_eso_sim",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "eso_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-eso_node-7aaf7fb96243072293f8.json",
+					"name" : "eso_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mimo_eso_sim_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mimo_eso_sim_uninstall-b30117b22c441cb53328.json",
+					"name" : "mimo_eso_sim_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "plant_node::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-plant_node-0244512bc94cb1bf26c3.json",
+					"name" : "plant_node",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-f07fea96550e4e0f6595.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/pjp2/mimo_eso_ws/build/mimo_eso_sim",
+		"source" : "/home/pjp2/mimo_eso_ws/src/mimo_eso_sim"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
