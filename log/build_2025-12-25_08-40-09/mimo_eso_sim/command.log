@@ -1,0 +1,4 @@
+Invoking command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/pjp2/mimo_eso_ws/build/mimo_eso_sim -- -j24 -l24
+Invoked command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/pjp2/mimo_eso_ws/build/mimo_eso_sim -- -j24 -l24
+Invoking command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/pjp2/mimo_eso_ws/build/mimo_eso_sim
+Invoked command in '/home/pjp2/mimo_eso_ws/build/mimo_eso_sim' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/pjp2/mimo_eso_ws/build/mimo_eso_sim
